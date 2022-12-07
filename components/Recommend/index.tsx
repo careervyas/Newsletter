@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import SectionHeader from '../common/SectionHeader'
 import Card from './Card'
-import client from '../../pages/client'
+import client from '../client'
 import groq from 'groq'
 
 const Recommend = () => {
