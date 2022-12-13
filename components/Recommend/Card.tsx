@@ -13,14 +13,14 @@ interface Props {
 const Card = ({data,key}:Props) => {
   
   const [author, setAuthor] = useState<string>("");
-  const imageProps = useNextSanityImage(client, data.mainImage);
+  const imageProps = useNextSanityImage(client, data?.mainImage);
 
   useEffect(() => {  
     const authorQuery = groq`*[_type=="author" && _id=="${data?.author?._ref}"]`;
 
     client.fetch(authorQuery).then((res) => {
       console.log(res);
-      setAuthor(res[0].name);
+      setAuthor(res[0]?.name);
     });
 
   })
@@ -34,19 +34,19 @@ const Card = ({data,key}:Props) => {
     <article className='overflow-hidden rounded-lg shadow transition hover:shadow-lg max-w-sm'>
       <img
         alt='Office'
-        src={imageProps.src}
+        src={imageProps?.src}
         className='h-56 w-full object-cover'
       />
 
       <div className='bg-white p-4 sm:p-6'>
         <a href='#'>
           <h3 className='font-cursive mt-0.5 text-lg text-gray-900'>
-            {data.title}
+            {data?.title}
           </h3>
         </a>
 
         <p className='mt-2 text-sm leading-relaxed text-gray-500 line-clamp-3'>
-         {data.excerpt}
+         {data?.excerpt}
         </p>
 
         <div className='mt-6 flex justify-between items-center gap-8 text-xs'>
@@ -73,7 +73,7 @@ const Card = ({data,key}:Props) => {
               </svg>
             </p>
             <time dateTime='2022-10-10' className='text-base'>
-              {new Date(data.publishedAt).toDateString()}
+              {new Date(data?.publishedAt).toDateString()}
             </time>
           </div>
         </div>

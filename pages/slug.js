@@ -28,7 +28,7 @@ export default function NewsLetter() {
   
     client.fetch(query).then((post) => {
       console.log(post);
-      const authorQuery = groq`*[_type=="author" && _id=="${post?.author._ref}"]`;
+      const authorQuery = groq`*[_type=="author" && _id=="${post?.author?._ref}"]`;
   
       client.fetch(authorQuery).then((author) => {
         setauthor(author[0]?.name);
@@ -43,16 +43,16 @@ export default function NewsLetter() {
   return (
     <>
       <Head>
-        <title>{postData.title}</title>
+        <title>{postData?.title}</title>
         <meta name="description" content={postData?.excerpt} />
         
       </Head>
       <Navbar></Navbar>
       <div className="flex flex-row h-full mx-4 md:mx-24 my-8">
         <div className="flex flex-col m-2 p-4 h-full w-full md:w-4/5 border-2 border-black space-y-5">
-          <h2 className="m-2 text-4xl font-bold">{postData.title}</h2>
+          <h2 className="m-2 text-4xl font-bold">{postData?.title}</h2>
           <Header
-            id={postData._id}
+            id={postData?._id}
             author={author}
             date={postData?._updatedAt}
             readtime={postData?.nminutesofread}
@@ -66,7 +66,7 @@ export default function NewsLetter() {
           />
 
           <PortableText
-            content={postData.content}
+            content={postData?.content}
             serializers={{
              
               container: (props) => (
