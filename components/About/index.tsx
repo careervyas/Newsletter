@@ -7,11 +7,8 @@ const About = () => {
         <div className='max-w-xl'>
           <h2 className='font-semibold text-4xl'>About Us</h2>
           <p className='mt-5'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius vel
-            ducimus, dolore, ipsum consequatur modi exercitationem saepe,
-            excepturi ut officiis voluptatum doloremque possimus corrupti ipsam
-            est officia. Incidunt nemo sapiente dignissimos mollitia assumenda
-            reiciendis quo voluptatem culpa repellat, ab accusamus
+          Career Vyaas is a porfessional guidance and mentoring platform. We match students with the best and most renowed mentors across the country, guiding them down the right career path. Our mission is to strengthen the vector of education by defining career guidance in new light.
+
           </p>
         </div>
         <img src='/vectors/about-vector.png' alt='' />

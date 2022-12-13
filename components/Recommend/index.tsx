@@ -15,10 +15,10 @@ async function getPosts() {
 
   useEffect(() => {
     getPosts().then((posts) => {
+      console.log(posts);
       setData(posts);
     });
 
-    console.log(data);
   }, []);
 
 
@@ -28,9 +28,10 @@ async function getPosts() {
         <div className='mx-auto container px-4 py-16 sm:px-6 lg:px-8'>
           <SectionHeader title='Recommended Newsletters' />
           <div className='mt-10 flex justify-between'>
-            <Card />
-            <Card />
-            <Card />
+            {data.map((item,index) => {
+              return <Card data={item} key={index}/>;
+            })}
+            
           </div>
         </div>
       </section>

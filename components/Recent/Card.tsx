@@ -1,18 +1,45 @@
 import React from 'react'
+import { useNextSanityImage } from 'next-sanity-image'
+import client from '../client'
+import groq from 'groq'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import Link from 'next/link'
 
-const Card = () => {
+interface Props {
+  data: any
+  key:any
+};
+
+const Card = ({data,key}:Props) => {
+  const [author, setAuthor] = useState<string>("");
+  const imageProps = useNextSanityImage(client, data.mainImage);
+
+  useEffect(() => {  
+    const authorQuery = groq`*[_type=="author" && _id=="${data?.author?._ref}"]`;
+
+    client.fetch(authorQuery).then((res) => {
+      console.log(res);
+      setAuthor(res[0].name);
+    });
+
+  })
+ 
   return (
+    <Link
+    href={{ pathname: "/slug", query: { keyword: `${data.slug.current}` } }}
+  >
     <article className='overflow-hidden rounded-lg shadow transition hover:shadow-lg max-w-sm'>
       <img
         alt='Office'
-        src='https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
+        src={imageProps.src}
         className='h-56 w-full object-cover'
       />
 
       <div className='bg-white p-4 sm:p-6'>
         <a href='#'>
           <h3 className='font-cursive mt-0.5 text-lg text-gray-900'>
-            How to position your furniture for positivity
+            {data.title}
           </h3>
         </a>
 
@@ -33,7 +60,7 @@ const Card = () => {
                 />
               </svg>
             </p>
-            <p className='text-base'>Mihika</p>
+            <p className='text-base'>{author}</p>
           </div>
           <div className='sm:inline-flex gap-2 sm:shrink-0 sm:items-center'>
             <p className='text-base'>
@@ -52,12 +79,13 @@ const Card = () => {
               </svg>
             </p>
             <time dateTime='2022-10-10' className='text-base'>
-              16 Nov 2022
+            {new Date(data.publishedAt).toDateString()}
             </time>
           </div>
         </div>
       </div>
     </article>
+    </Link>
   )
 }
 
