@@ -61,7 +61,7 @@ export default function NewsLetter() {
 
           <img
             className="w-full"
-            src={imageProps.src}
+            src={imageProps?.src}
             alt="career vyas"
           />
 
