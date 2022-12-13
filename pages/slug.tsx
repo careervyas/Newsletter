@@ -1,5 +1,5 @@
 import imageUrlBuilder from "@sanity/image-url";
-import client from "../components/client"
+import client from "../components/client";
 import { useState, useEffect } from "react";
 import groq from "groq";
 import { useRouter } from "next/router";
@@ -8,36 +8,33 @@ import Head from "next/head";
 import Footer from "../components/Footer";
 import PortableText from "react-portable-text";
 import Header from "../components/Generic/Header";
-import { useNextSanityImage } from "next-sanity-image";
-
-const builder = imageUrlBuilder(client);
-function urlFor(source) {
-  return builder.image(source);
-}
 
 export default function NewsLetter() {
   const router = useRouter();
-  const [postData, setpostData] = useState(null);
-  const [author, setauthor] = useState("");
+  const [postData, setpostData] = useState<any>(null);
+  const [author, setauthor] = useState<string>("");
 
-  const imageProps = useNextSanityImage(client, postData?.mainImage);
+  const builder = imageUrlBuilder(client);
+  function urlFor(source: any) {
+    console.log(source);
+    return builder.image(source);
+  }
 
   useEffect(() => {
     const slug = router.query["keyword"];
     const query = groq`*[_type=="post" && slug.current=="${slug}"][0]`;
-  
+
     client.fetch(query).then((post) => {
       console.log(post);
       const authorQuery = groq`*[_type=="author" && _id=="${post?.author?._ref}"]`;
-  
+
       client.fetch(authorQuery).then((author) => {
         setauthor(author[0]?.name);
       });
       setpostData(post);
     });
-  
   }, [router.query]);
- 
+
   if (!postData) return <div>Loading...</div>;
 
   return (
@@ -45,7 +42,6 @@ export default function NewsLetter() {
       <Head>
         <title>{postData?.title}</title>
         <meta name="description" content={postData?.excerpt} />
-        
       </Head>
       <Navbar></Navbar>
       <div className="flex flex-row h-full mx-4 md:mx-24 my-8">
@@ -59,17 +55,12 @@ export default function NewsLetter() {
             slug={postData?.slug.current}
           ></Header>
 
-          <img
-            className="w-full"
-            src={imageProps?.src}
-            alt="career vyas"
-          />
+          <img className="w-full" src={urlFor(postData?.mainImage).width(200).url()} alt="career vyas" />
 
           <PortableText
             content={postData?.content}
             serializers={{
-             
-              container: (props) => (
+              container: (props:any) => (
                 <div
                   style={{
                     margin: "8px",
@@ -80,7 +71,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              h1: (props) => (
+              h1: (props:any) => (
                 <h1
                   style={{
                     fontSize: "2rem",
@@ -90,7 +81,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              h2: (props) => (
+              h2: (props:any) => (
                 <h2
                   style={{
                     fontSize: "1.7rem",
@@ -100,7 +91,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              h3: (props) => (
+              h3: (props:any) => (
                 <h3
                   style={{
                     fontSize: "1.5rem",
@@ -110,7 +101,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              h4: (props) => (
+              h4: (props:any) => (
                 <h4
                   style={{
                     fontSize: "1.3rem",
@@ -120,7 +111,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              h5: (props) => (
+              h5: (props:any) => (
                 <h5
                   style={{
                     fontSize: "1.1rem",
@@ -130,7 +121,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              h6: (props) => (
+              h6: (props:any) => (
                 <h6
                   style={{
                     fontSize: "1rem",
@@ -140,7 +131,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              normal: (props) => (
+              normal: (props:any) => (
                 <p
                   style={{
                     fontSize: "1rem",
@@ -150,7 +141,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              link: (props) => (
+              link: (props:any) => (
                 <a
                   style={{
                     color: "blue",
@@ -159,7 +150,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              ul: (props) => (
+              ul: (props:any) => (
                 <ul
                   style={{
                     listStyleType: "disc",
@@ -169,7 +160,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              em: (props) => (
+              em: (props:any) => (
                 <em
                   style={{
                     fontStyle: "italic",
@@ -178,7 +169,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              strong: (props) => (
+              strong: (props:any) => (
                 <strong
                   style={{
                     fontWeight: "bold",
@@ -187,7 +178,7 @@ export default function NewsLetter() {
                   {...props}
                 />
               ),
-              blockquote: (props) => (
+              blockquote: (props:any) => (
                 <blockquote
                   style={{
                     borderLeft: "5px solid #ccc",
@@ -206,17 +197,14 @@ export default function NewsLetter() {
           />
           {postData?.youtubeVideo && (
             <iframe
-            className="w-full h-full sm:h-[500px]"
-            src={postData?.youtubeVideo}
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+              className="w-full h-full sm:h-[500px]"
+              src={postData?.youtubeVideo}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           )}
-          
-          
         </div>
-        
       </div>
 
       <Footer></Footer>

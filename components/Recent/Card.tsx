@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNextSanityImage } from 'next-sanity-image'
+import imageUrlBuilder from '@sanity/image-url'
 import client from '../client'
 import groq from 'groq'
 import { useState } from 'react'
@@ -12,8 +12,14 @@ interface Props {
 };
 
 const Card = ({data,key}:Props) => {
+  
   const [author, setAuthor] = useState<string>("");
-  const imageProps = useNextSanityImage(client, data?.mainImage);
+  
+  const builder = imageUrlBuilder(client);
+  function urlFor(source:any) {
+    console.log(source)
+    return builder.image(source)
+  }
 
   useEffect(() => {  
     const authorQuery = groq`*[_type=="author" && _id=="${data?.author?._ref}"]`;
@@ -24,7 +30,8 @@ const Card = ({data,key}:Props) => {
     });
 
   })
- 
+  
+
   return (
     <Link
     href={{ pathname: "/slug", query: { keyword: `${data.slug.current}` } }}
@@ -32,7 +39,7 @@ const Card = ({data,key}:Props) => {
     <article className='overflow-hidden rounded-lg shadow transition hover:shadow-lg max-w-sm'>
       <img
         alt='Office'
-        src={imageProps?.src}
+        src={urlFor(data?.mainImage).width(200).url()}
         className='h-56 w-full object-cover'
       />
 
