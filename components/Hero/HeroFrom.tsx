@@ -40,6 +40,12 @@ const HeroForm = () => {
 
     const SHEET_NAME = "Sheet1";
     const sheet = docs.sheetsByTitle[SHEET_NAME];
+
+    if(!Email.includes('@') || Email==""){
+      toast.warn('Please Enter Correct Email Address');
+      return;
+    }
+    
     sheet.addRow({
       timestamp: new Date(),
       email: Email,

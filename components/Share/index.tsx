@@ -5,7 +5,7 @@ import LinkBox from './LinkBox'
 
 const Share = () => {
   const notify = () => {
-    navigator.clipboard.writeText('https://www.careervyas.com/')
+    navigator.clipboard.writeText('https://newsletter.careervyas.com')
     toast.success('Copied to Clipboard')
   }
   return (
